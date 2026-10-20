@@ -1,0 +1,16 @@
+{
+	"KPlugin": {
+		"Authors": [
+			{
+				"Name": "Programeldev"
+			}
+		],
+		"Category": "Utilities",
+		"Description": "Scheduler for shutdown, reboot or run script.",
+		"Icon": "application-x-cisco-vpn-settings",
+		"Id": "com.github.Programeldev.Scheduler",
+		"Version": "1"
+	},
+	"X-Plasma-API-Minimum-Version": "6.0",
+	"KPackageStructure": "Plasma/Applet"
+}
