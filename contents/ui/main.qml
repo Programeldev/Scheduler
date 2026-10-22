@@ -32,12 +32,7 @@ PlasmoidItem {
             return;
         }
 
-        tasks = [...tasks,
-            {
-                when_schedule: when_schedule,
-                msg: msg
-            }
-        ];
+        tasks = [...tasks, {when_schedule: when_schedule, msg: msg}];
     }
 
     function removeTask(index) {
@@ -45,7 +40,8 @@ PlasmoidItem {
     }
 
     function runTask(task) {
-        executable.exec('notify-send -t 3000 "Scheduler" "task msg: %1"' + task.msg);
+		console.log(`notify-send -t 3000 "Scheduler" "task msg: ${task.msg}"`)
+        executable.exec(`notify-send -t 3000 "Scheduler" "task msg: ${task.msg}"`);
     }
 
     Plasmoid.icon: "ktimer"
@@ -65,11 +61,12 @@ PlasmoidItem {
         interval: 1000
         repeat: true
         running: root.tasks.length > 0
+		triggeredOnStart: true
         onTriggered: {
             root.now = Date.now();
 
             const due = root.tasks.filter(t => t.when_schedule.getTime() <= root.now);
-            if (due.lenght > 0) {
+            if (due.length > 0) {
                 due.forEach(t => root.runTask(t));
                 root.tasks = root.tasks.filter(t => t.when_schedule.getTime() > root.now);
             }
