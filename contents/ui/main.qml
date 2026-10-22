@@ -75,46 +75,44 @@ PlasmoidItem {
 					Layout.fillWidth: true
 					Layout.fillHeight: true
 					Kirigami.Theme.colorSet: Kirigami.Theme.Button
-					Layout.margins: Kirigami.Units.gridUnit * 1.3
-					opacity: hovered ? 0.95 : 0.75
-
-					Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
-
+					Layout.margins: Kirigami.Units.gridUnit * 1.6
 
 					background: Rectangle {
 						radius: Kirigami.Units.cornerRadius
 						color: button.hovered ? Qt.lighter(Kirigami.Theme.backgroundColor, 1.5)
 							 : Kirigami.Theme.backgroundColor
 						scale: button.pressed ? 1.1
-							 : button.hovered ? 1.05
 							 : 1.0
 
 						Behavior on color { ColorAnimation { duration: Kirigami.Units.shortDuration } }
 						Behavior on scale { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 					}
 
-					contentItem: ColumnLayout {
-						PlasmaComponents.Label {
-							Layout.fillWidth: true
-							Layout.fillHeight: true
-							horizontalAlignment: Text.AlignHCenter
-							verticalAlignment: Text.AlignBottom
-							text: i18n("No Task")
-							font.pointSize: 16 
-						}
+					contentItem: Item {
+        				implicitWidth: row.implicitWidth
+        				implicitHeight: row.implicitHeight
 
-						PlasmaComponents.Label {
-							Layout.fillWidth: true
-							Layout.fillHeight: true
-							horizontalAlignment: Text.AlignHCenter
-							verticalAlignment: Text.AlignTop
-							text: i18n("create new")
-							font.pointSize: 8
+						RowLayout {
+							id: row
+							anchors.centerIn: parent
+
+							Kirigami.Icon {
+								source: "gtk-add"
+        						implicitWidth: Kirigami.Units.iconSizes.medium
+        						implicitHeight: Kirigami.Units.iconSizes.medium
+							}
+
+							PlasmaComponents.Label {
+								text: i18n("Schedule Task")
+								font.pointSize: 12
+							}
 						}
 					}
 				}
 			}
 		}
+	}
+}
 
         // ColumnLayout {
         //     PlasmaComponents.Button {
@@ -225,5 +223,4 @@ PlasmoidItem {
         //     icon.name: root.running ? "dialog-cancel" : "media-playback-start"
         //     onClicked: root.remaining = root.running ? 0 : seconds.value
         // }
-    }
-}
+//     }
