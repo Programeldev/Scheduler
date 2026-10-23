@@ -58,8 +58,8 @@ PlasmoidItem {
 
     fullRepresentation: ColumnLayout {
         spacing: Kirigami.Units.largeSpacing
-        Layout.minimumWidth: Kirigami.Units.gridUnit * 14
-        Layout.minimumHeight: Kirigami.Units.gridUnit * 8
+        Layout.minimumWidth: Kirigami.Units.gridUnit * 15
+        Layout.minimumHeight: Kirigami.Units.gridUnit * 10
 
 		StackLayout {
 		    id: stackLayout
@@ -76,6 +76,8 @@ PlasmoidItem {
 					Layout.fillHeight: true
 					Kirigami.Theme.colorSet: Kirigami.Theme.Button
 					Layout.margins: Kirigami.Units.gridUnit * 1.6
+
+					onPressed: stackLayout.currentIndex = 1
 
 					background: Rectangle {
 						radius: Kirigami.Units.cornerRadius
@@ -109,6 +111,57 @@ PlasmoidItem {
 						}
 					}
 				}
+			}
+
+			ColumnLayout {
+				RowLayout {
+					Layout.margins: Kirigami.Units.gridUnit * 0.8
+					Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
+					// anchors.centerIn: parent
+					// Layout.fillWidth: true
+					// Layout.alignment: Qt.AlignCenter
+					
+					PlasmaComponents.Label {
+						Layout.fillWidth: true
+						
+						text: "Task"
+					}
+
+					PlasmaComponents.ComboBox {
+						// Layout.fillWidth: true
+						
+						model: [
+							{ value: "poweroff", text: i18n("Shutdown") },
+							{ value: "reboot", text: i18n("Reboot") },
+							{ value: "suspend", text: i18n("Suspend") },
+							{ value: "hibernate", text: i18n("Hibernate") },
+							{ value: "command", text: i18n("Custom command") },
+						]
+
+						textRole: "text"
+						valueRole: "value"
+					}
+				}
+
+				RowLayout {
+					Layout.margins: Kirigami.Units.gridUnit * 0.8
+					Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
+
+					PlasmaComponents.Label {
+						Layout.fillWidth: true
+						text: i18n("When schedule")
+					}
+
+					PlasmaComponents.Button {
+						text: i18n("Select date")
+					}
+				}
+
+				PlasmaComponents.Button {
+					Layout.alignment: Qt.AlignHCenter
+					// anchors.bottom: parent.bottom
+					text: i18n("Save")
+				}	
 			}
 		}
 	}
