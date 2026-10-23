@@ -7,6 +7,8 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasma5support as P5Support
 import org.kde.kirigami as Kirigami
+import "DateTimePicker"
+
 
 PlasmoidItem {
     id: root
@@ -53,6 +55,26 @@ PlasmoidItem {
 				root.task = null
 				execute.cmd(command)
 			}
+        }
+    }
+
+    TimePicker {
+        id: timePicker
+        hour: root.now.getHours()
+        minute: root.now.getMinutes()
+        onAccepted: {
+            // root.now.setHours(hour);
+            // root.now.setMinutes(minute);
+        }
+    }
+
+    DatePicker {
+        id: datePicker
+        year: root.now.getFullYear()
+        month: root.now.getMonth()
+        day: root.now.getDate()
+        onAccepted: {
+            // app.date.setFullYear(year, month, day);
         }
     }
 
@@ -113,56 +135,83 @@ PlasmoidItem {
 				}
 			}
 
-			ColumnLayout {
-				RowLayout {
-					Layout.margins: Kirigami.Units.gridUnit * 0.8
-					Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
-					// anchors.centerIn: parent
-					// Layout.fillWidth: true
-					// Layout.alignment: Qt.AlignCenter
-					
-					PlasmaComponents.Label {
-						Layout.fillWidth: true
-						
-						text: "Task"
-					}
+			Kirigami.FormLayout {
+				anchors.fill: parent
 
-					PlasmaComponents.ComboBox {
-						// Layout.fillWidth: true
-						
-						model: [
-							{ value: "poweroff", text: i18n("Shutdown") },
-							{ value: "reboot", text: i18n("Reboot") },
-							{ value: "suspend", text: i18n("Suspend") },
-							{ value: "hibernate", text: i18n("Hibernate") },
-							{ value: "command", text: i18n("Custom command") },
-						]
+				PlasmaComponents.ComboBox {
+					Kirigami.FormData.label: "Task"
 
-						textRole: "text"
-						valueRole: "value"
-					}
-				}
+					model: [
+						{ value: "poweroff", text: i18n("Shutdown") },
+						{ value: "reboot", text: i18n("Reboot") },
+						{ value: "suspend", text: i18n("Suspend") },
+						{ value: "hibernate", text: i18n("Hibernate") },
+						{ value: "command", text: i18n("Custom command") },
+					]
 
-				RowLayout {
-					Layout.margins: Kirigami.Units.gridUnit * 0.8
-					Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
-
-					PlasmaComponents.Label {
-						Layout.fillWidth: true
-						text: i18n("When schedule")
-					}
-
-					PlasmaComponents.Button {
-						text: i18n("Select date")
-					}
+					textRole: "text"
+					valueRole: "value"
 				}
 
 				PlasmaComponents.Button {
-					Layout.alignment: Qt.AlignHCenter
-					// anchors.bottom: parent.bottom
-					text: i18n("Save")
-				}	
+					onClicked: {
+						let date = new Date()
+						datePicker.minSelectableYear = date.getFullYear() - 5;
+                    	datePicker.minSelectableMonth = 5;
+                    	datePicker.maxSelectableYear = date.getFullYear() + 5;
+                    	datePicker.maxSelectableMonth = 5;
+						datePicker.pickMode = datePicker.pickMonthYear;
+						datePicker.open();
+					}
+				}
 			}
+
+			// ColumnLayout {
+			// 	RowLayout {
+			// 		Layout.margins: Kirigami.Units.gridUnit * 0.8
+			// 		Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
+			//
+			// 		PlasmaComponents.Label {
+			// 			Layout.fillWidth: true
+			//
+			// 			text: "Task"
+			// 		}
+			//
+			// 		PlasmaComponents.ComboBox {
+			//
+			// 			model: [
+			// 				{ value: "poweroff", text: i18n("Shutdown") },
+			// 				{ value: "reboot", text: i18n("Reboot") },
+			// 				{ value: "suspend", text: i18n("Suspend") },
+			// 				{ value: "hibernate", text: i18n("Hibernate") },
+			// 				{ value: "command", text: i18n("Custom command") },
+			// 			]
+			//
+			// 			textRole: "text"
+			// 			valueRole: "value"
+			// 		}
+			// 	}
+			//
+			// 	RowLayout {
+			// 		Layout.margins: Kirigami.Units.gridUnit * 0.8
+			// 		Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
+			//
+			// 		PlasmaComponents.Label {
+			// 			Layout.fillWidth: true
+			// 			text: i18n("When schedule")
+			// 		}
+			//
+			// 		PlasmaComponents.Button {
+			// 			text: i18n("Select date")
+			// 		}
+			// 	}
+			//
+			// 	PlasmaComponents.Button {
+			// 		Layout.alignment: Qt.AlignHCenter
+			// 		// anchors.bottom: parent.bottom
+			// 		text: i18n("Save")
+			// 	}	
+			// }
 		}
 	}
 }
