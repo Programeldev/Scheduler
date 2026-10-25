@@ -135,123 +135,78 @@ PlasmoidItem {
 				}
 			}
 
-			ColumnLayout {
+			GridLayout {
 				anchors.centerIn: parent
-				Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+				columns: 2
 
-				RowLayout {
-					id: row1
-					anchors.top: parent.top
-					Layout.fillWidth: true
-					Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-
-					PlasmaComponents.Label {
-						id: taskLabel
-						// anchors.centerIn: row1
-						text: "Task"
-					}
-
-					PlasmaComponents.ComboBox {
-						id: taskBox
-						anchors.left: taskLabel.right
-
-						model: [
-							{ command: "poweroff",	text: i18n("Shutdown") },
-							{ command: "reboot",	text: i18n("Reboot") },
-							{ command: "suspend",	text: i18n("Suspend") },
-							{ command: "hibernate",	text: i18n("Hibernate") },
-							{ command: "custom command",	text: i18n("Custom command") },
-						]
-
-						textRole: "text"
-						valueRole: "command"
-					}
+				PlasmaComponents.Label {
+					Layout.alignment: Qt.AlignRight
+					text: "Task:"
 				}
 
-				RowLayout {
-					id: row2
-					anchors.top: row1.bottom
-					Layout.fillWidth: true
-					Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-					visible: taskBox.currentValue == "custom command" ? true : false
+				PlasmaComponents.ComboBox {
+					id: taskBox
+					Layout.alignment: Qt.AlignHCenter
+
+					model: [
+						{ command: "poweroff",	text: i18n("Shutdown") },
+						{ command: "reboot",	text: i18n("Reboot") },
+						{ command: "suspend",	text: i18n("Suspend") },
+						{ command: "hibernate",	text: i18n("Hibernate") },
+						{ command: "custom command",	text: i18n("Custom command") },
+					]
+
+					textRole: "text"
+					valueRole: "command"
+				}
+
 					
-					PlasmaComponents.ScrollView {
-						PlasmaComponents.TextArea {
-							placeholderText: "type command"
-						}
+				PlasmaComponents.ScrollView {
+					Layout.columnSpan: 2
+					Layout.alignment: Qt.AlignHCenter
+					visible: taskBox.currentValue == "custom command" ? true : false
+
+					PlasmaComponents.TextArea {
+						placeholderText: "type command"
 					}
 				}
 
-				RowLayout {
-					id: row3
-					anchors.top: row2.visible ? row2.bottom : row1.bottom
-					Layout.fillWidth: true
-					Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+				PlasmaComponents.RadioButton {
+					id: radioButton1
+					Layout.alignment: Qt.AlignLeft
+					text: i18n("set date/time")
+					checked: true
+				}
 
-					PlasmaComponents.Button {
-						anchors.centerIn: parent
+				PlasmaComponents.Button {
+					Layout.alignment: Qt.AlignHCenter
+					text: "Select Date"
+					enabled: radioButton1.checked ? true : false
 
-						onClicked: {
-							let date = new Date()
-							datePicker.minSelectableYear = date.getFullYear() - 5;
-                	    	datePicker.minSelectableMonth = 5;
-                	    	datePicker.maxSelectableYear = date.getFullYear() + 5;
-                	    	datePicker.maxSelectableMonth = 5;
-							datePicker.minSelectableDay = 1
-							datePicker.maxSelectableDay = 31
-							datePicker.pickMode = datePicker.pickDayMonthYear;
-							datePicker.open();
-						}
+					onClicked: {
+						let date = new Date()
+						datePicker.minSelectableYear = date.getFullYear() - 5;
+				                	datePicker.minSelectableMonth = 5;
+				                	datePicker.maxSelectableYear = date.getFullYear() + 5;
+				                	datePicker.maxSelectableMonth = 5;
+						datePicker.minSelectableDay = 1
+						datePicker.maxSelectableDay = 31
+						datePicker.pickMode = datePicker.pickDayMonthYear;
+						datePicker.open();
 					}
+				}
+
+				PlasmaComponents.RadioButton {
+					id: radioButton2
+					Layout.alignment: Qt.AlignLeft
+					text: i18n("time remaining")
+				}
+
+				PlasmaComponents.TextField {
+					Layout.alignment: Qt.AlignHCenter
+					enabled: radioButton2.checked ? true : false
 				}
 			}
-
-			// ColumnLayout {
-			// 	RowLayout {
-			// 		Layout.margins: Kirigami.Units.gridUnit * 0.8
-			// 		Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
-			//
-			// 		PlasmaComponents.Label {
-			// 			Layout.fillWidth: true
-			//
-			// 			text: "Task"
-			// 		}
-			//
-			// 		PlasmaComponents.ComboBox {
-			//
-			// 			model: [
-			// 				{ value: "poweroff", text: i18n("Shutdown") },
-			// 				{ value: "reboot", text: i18n("Reboot") },
-			// 				{ value: "suspend", text: i18n("Suspend") },
-			// 				{ value: "hibernate", text: i18n("Hibernate") },
-			// 				{ value: "command", text: i18n("Custom command") },
-			// 			]
-			//
-			// 			textRole: "text"
-			// 			valueRole: "value"
-			// 		}
-			// 	}
-			//
-			// 	RowLayout {
-			// 		Layout.margins: Kirigami.Units.gridUnit * 0.8
-			// 		Layout.leftMargin: Kirigami.Units.gridUnit * 1.2
-			//
-			// 		PlasmaComponents.Label {
-			// 			Layout.fillWidth: true
-			// 			text: i18n("When schedule")
-			// 		}
-			//
-			// 		PlasmaComponents.Button {
-			// 			text: i18n("Select date")
-			// 		}
-			// 	}
-			//
-			// 	PlasmaComponents.Button {
-			// 		Layout.alignment: Qt.AlignHCenter
-			// 		// anchors.bottom: parent.bottom
-			// 		text: i18n("Save")
-			// 	}	
-			// }
 		}
 	}
 }
