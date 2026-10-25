@@ -135,33 +135,73 @@ PlasmoidItem {
 				}
 			}
 
-			Kirigami.FormLayout {
-				anchors.fill: parent
+			ColumnLayout {
+				anchors.centerIn: parent
+				Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
 
-				PlasmaComponents.ComboBox {
-					Kirigami.FormData.label: "Task"
+				RowLayout {
+					id: row1
+					anchors.top: parent.top
+					Layout.fillWidth: true
+					Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
 
-					model: [
-						{ value: "poweroff", text: i18n("Shutdown") },
-						{ value: "reboot", text: i18n("Reboot") },
-						{ value: "suspend", text: i18n("Suspend") },
-						{ value: "hibernate", text: i18n("Hibernate") },
-						{ value: "command", text: i18n("Custom command") },
-					]
+					PlasmaComponents.Label {
+						id: taskLabel
+						// anchors.centerIn: row1
+						text: "Task"
+					}
 
-					textRole: "text"
-					valueRole: "value"
+					PlasmaComponents.ComboBox {
+						id: taskBox
+						anchors.left: taskLabel.right
+
+						model: [
+							{ command: "poweroff",	text: i18n("Shutdown") },
+							{ command: "reboot",	text: i18n("Reboot") },
+							{ command: "suspend",	text: i18n("Suspend") },
+							{ command: "hibernate",	text: i18n("Hibernate") },
+							{ command: "custom command",	text: i18n("Custom command") },
+						]
+
+						textRole: "text"
+						valueRole: "command"
+					}
 				}
 
-				PlasmaComponents.Button {
-					onClicked: {
-						let date = new Date()
-						datePicker.minSelectableYear = date.getFullYear() - 5;
-                    	datePicker.minSelectableMonth = 5;
-                    	datePicker.maxSelectableYear = date.getFullYear() + 5;
-                    	datePicker.maxSelectableMonth = 5;
-						datePicker.pickMode = datePicker.pickMonthYear;
-						datePicker.open();
+				RowLayout {
+					id: row2
+					anchors.top: row1.bottom
+					Layout.fillWidth: true
+					Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+					visible: taskBox.currentValue == "custom command" ? true : false
+					
+					PlasmaComponents.ScrollView {
+						PlasmaComponents.TextArea {
+							placeholderText: "type command"
+						}
+					}
+				}
+
+				RowLayout {
+					id: row3
+					anchors.top: row2.visible ? row2.bottom : row1.bottom
+					Layout.fillWidth: true
+					Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+
+					PlasmaComponents.Button {
+						anchors.centerIn: parent
+
+						onClicked: {
+							let date = new Date()
+							datePicker.minSelectableYear = date.getFullYear() - 5;
+                	    	datePicker.minSelectableMonth = 5;
+                	    	datePicker.maxSelectableYear = date.getFullYear() + 5;
+                	    	datePicker.maxSelectableMonth = 5;
+							datePicker.minSelectableDay = 1
+							datePicker.maxSelectableDay = 31
+							datePicker.pickMode = datePicker.pickDayMonthYear;
+							datePicker.open();
+						}
 					}
 				}
 			}
