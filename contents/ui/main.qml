@@ -7,6 +7,7 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasma5support as P5Support
 import org.kde.kirigami as Kirigami
+
 import "DateTimePicker"
 
 
@@ -137,11 +138,12 @@ PlasmoidItem {
 
 			GridLayout {
 				anchors.centerIn: parent
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 15
 				columns: 2
 
 				PlasmaComponents.Label {
-					Layout.alignment: Qt.AlignRight
-					text: "Task:"
+					Layout.alignment: Qt.AlignCenter
+					text: "Task"
 				}
 
 				PlasmaComponents.ComboBox {
@@ -149,26 +151,24 @@ PlasmoidItem {
 					Layout.alignment: Qt.AlignHCenter
 
 					model: [
-						{ command: "poweroff",	text: i18n("Shutdown") },
-						{ command: "reboot",	text: i18n("Reboot") },
-						{ command: "suspend",	text: i18n("Suspend") },
-						{ command: "hibernate",	text: i18n("Hibernate") },
-						{ command: "custom command",	text: i18n("Custom command") },
+						{ task: "poweroff",			text: i18n("Shutdown") },
+						{ task: "reboot",			text: i18n("Reboot") },
+						{ task: "suspend",			text: i18n("Suspend") },
+						{ task: "hibernate",		text: i18n("Hibernate") },
+						{ task: "custom command",	text: i18n("Custom command") },
 					]
 
 					textRole: "text"
-					valueRole: "command"
+					valueRole: "task"
 				}
 
-					
-				PlasmaComponents.ScrollView {
+				PlasmaComponents.TextArea {
 					Layout.columnSpan: 2
 					Layout.alignment: Qt.AlignHCenter
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 13.5
+					Layout.maximumWidth: Kirigami.Units.gridUnit * 13.5
 					visible: taskBox.currentValue == "custom command" ? true : false
-
-					PlasmaComponents.TextArea {
-						placeholderText: "type command"
-					}
+					placeholderText: "type command"
 				}
 
 				PlasmaComponents.RadioButton {
@@ -180,15 +180,15 @@ PlasmoidItem {
 
 				PlasmaComponents.Button {
 					Layout.alignment: Qt.AlignHCenter
-					text: "Select Date"
-					enabled: radioButton1.checked ? true : false
+					text: i18n("Select Date")
+					enabled: radioButton1.checked
 
 					onClicked: {
 						let date = new Date()
 						datePicker.minSelectableYear = date.getFullYear() - 5;
-				                	datePicker.minSelectableMonth = 5;
-				                	datePicker.maxSelectableYear = date.getFullYear() + 5;
-				                	datePicker.maxSelectableMonth = 5;
+						datePicker.minSelectableMonth = 5;
+						datePicker.maxSelectableYear = date.getFullYear() + 5;
+						datePicker.maxSelectableMonth = 5;
 						datePicker.minSelectableDay = 1
 						datePicker.maxSelectableDay = 31
 						datePicker.pickMode = datePicker.pickDayMonthYear;
@@ -202,10 +202,29 @@ PlasmoidItem {
 					text: i18n("time remaining")
 				}
 
-				PlasmaComponents.TextField {
-					Layout.alignment: Qt.AlignHCenter
-					enabled: radioButton2.checked ? true : false
+				RowLayout {
+					SpinBox {
+						Layout.preferredWidth: Krigiami.Units.gridUnit * 3
+						Layout.preferredHeight: Krigiami.Units.gridUnit * 3
+						enabled: radioButton2.checked
+					}
+
+					SpinBox {
+						width: Krigiami.Units.gridUnit * 10
+						height: Krigiami.Units.gridUnit * 10
+						enabled: radioButton2.checked
+					}
+
+					SpinBox {
+						width: Krigiami.Units.gridUnit * 10
+						height: Krigiami.Units.gridUnit * 10
+						enabled: radioButton2.checked
+					}
 				}
+				// PlasmaComponents.TextField {
+				// 	Layout.alignment: Qt.AlignHCenter
+				// 	enabled: radioButton2.checked ? true : false
+				// }
 			}
 		}
 	}
